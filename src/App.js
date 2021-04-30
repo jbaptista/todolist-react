@@ -1,25 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import Todo from "./components/Todo";
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const originalCourses = ['Learn React', 'Master React', 'Explore the full React course']
+
+  const [courses, setCourses] = useState(originalCourses)
+
+  const [newName, setNewName] = useState('inicio')
+
+  const handleChange = (event) => {
+    setNewName(event.target.value)
+  }
+
+  const deleteCourse = c => {
+    setCourses(courses.filter(el => el !== c))
+  }
+
+  const addCourse = e => {
+    e.preventDefault()
+    setCourses([...courses, newName])
+    setNewName('')
+  }
+
+  return <div>
+    <h1>My Todos</h1>
+    { 
+      courses.map(c => {
+      return <Todo text={c} deleteTodo={deleteCourse}/>
+    })}
+
+    <form onSubmit={addCourse}>
+    <input type="text" onChange={handleChange} value={newName}/>
+    <button className="btn" type="submit">ADD</button>
+    </form>
+    
+  </div>
 }
 
 export default App;
